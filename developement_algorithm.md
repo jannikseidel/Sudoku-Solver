@@ -1,0 +1,4 @@
+- Zahlen 1-9, jede in jeder Spalte & Zeile sowie in jedem 3x3 Feld
+- symetrische Matrix als "Eingabefeld" (9x9)
+- falls eine einzelne Zelle leer ist mit fehlender Zahl in Spalte oder Zeile ergaenzen
+- falls alle anderen Zellen im 3x3 Feld gesperrt sind fuer spezifische Zahl diese einfuegen
