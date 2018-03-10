@@ -12,6 +12,7 @@ matrix_3_1 = np.matrix([[7,0,0],[6,1,0],[0,0,2]])
 matrix_3_2 = np.matrix([[0,6,0],[0,0,2],[1,0,0]])
 matrix_3_3 = np.matrix([[0,0,0],[8,5,0],[0,9,6]])
 
+# VERWENDE STRINGS UM DAS GANZE EFFIZIENTER UND SCHNELLER ZU MACHEN!!!
 
 def solver_3x3(matrix):
     ''' Returns either a solved matrix if only one number is missing or
