@@ -9,16 +9,11 @@ import numpy as np
 
 sudoku = np.matrix([[2,3,1,0,0,5,9,0,0],[0,4,9,0,0,0,6,2,0],[0,0,0,0,1,0,0,0,3],[9,0,0,5,3,0,0,7,0],[0,0,8,9,7,4,1,0,0],[1,5,0,0,0,6,0,0,9],[7,0,0,0,6,0,0,0,0],[6,1,0,0,0,2,8,5,0],[0,0,2,1,0,0,0,9,6]])
 
-matrix_1_1 = np.matrix([[sudoku[0,0],sudoku[0,1],sudoku[0,2]],[sudoku[1,0],sudoku[1,1],sudoku[1,2]],[sudoku[2,0],sudoku[2,1],sudoku[2,2]]])
-matrix_1_2 = np.matrix([[sudoku[0,3],sudoku[0,4],sudoku[0,5]],[sudoku[1,3],sudoku[1,4],sudoku[1,5]],[sudoku[2,3],sudoku[2,4],sudoku[2,5]]])
-matrix_1_3 = np.matrix([[sudoku[0,6],sudoku[0,7],sudoku[0,8]],[sudoku[1,6],sudoku[1,7],sudoku[1,8]],[sudoku[2,6],sudoku[2,7],sudoku[2,8]]])
-matrix_2_1 = np.matrix([[sudoku[3,0],sudoku[3,1],sudoku[3,2]],[sudoku[4,0],sudoku[4,1],sudoku[4,2]],[sudoku[5,0],sudoku[5,1],sudoku[5,2]]])
-matrix_2_2 = np.matrix([[sudoku[3,3],sudoku[3,4],sudoku[3,5]],[sudoku[4,3],sudoku[4,4],sudoku[4,5]],[sudoku[5,3],sudoku[5,4],sudoku[5,5]]])
-matrix_2_3 = np.matrix([[sudoku[3,6],sudoku[3,7],sudoku[3,8]],[sudoku[4,6],sudoku[4,7],sudoku[4,8]],[sudoku[5,6],sudoku[5,7],sudoku[5,8]]])
-matrix_3_1 = np.matrix([[sudoku[6,0],sudoku[6,1],sudoku[6,2]],[sudoku[7,0],sudoku[7,1],sudoku[7,2]],[sudoku[8,0],sudoku[8,1],sudoku[8,2]]])
-matrix_3_2 = np.matrix([[sudoku[6,3],sudoku[6,4],sudoku[6,5]],[sudoku[7,3],sudoku[7,4],sudoku[7,5]],[sudoku[8,3],sudoku[8,4],sudoku[8,5]]])
-matrix_3_3 = np.matrix([[sudoku[6,6],sudoku[6,7],sudoku[6,8]],[sudoku[7,6],sudoku[7,7],sudoku[7,8]],[sudoku[8,6],sudoku[8,7],sudoku[8,8]]])
 # VERWENDE STRINGS UM DAS GANZE EFFIZIENTER UND SCHNELLER ZU MACHEN!!!
+
+
+
+str(matrix_1_1[2]).strip('[]')
 
 def solver_3x3(matrix):
     ''' Returns either a solved matrix if only one number is missing or
@@ -99,35 +94,63 @@ while count_zero > 0:
     # setting counter to zero
     count_zero = 0
 
-    # concatinating the numbers in each coloumn to a string
-    coloumn_1 = str(sudoku[0,0]) + str(sudoku[1,0]) + str(sudoku[2,0]) + str(sudoku[3,0]) + str(sudoku[4,0]) + str(sudoku[5,0]) + str(sudoku[6,0]) + str(sudoku[7,0]) + str(sudoku[8,0])
-    coloumn_2 = str(sudoku[0,1]) + str(sudoku[1,1]) + str(sudoku[2,1]) + str(sudoku[3,1]) + str(sudoku[4,1]) + str(sudoku[5,1]) + str(sudoku[6,1]) + str(sudoku[7,1]) + str(sudoku[8,1])
-    coloumn_3 = str(sudoku[0,2]) + str(sudoku[1,2]) + str(sudoku[2,2]) + str(sudoku[3,2]) + str(sudoku[4,2]) + str(sudoku[5,2]) + str(sudoku[6,2]) + str(sudoku[7,2]) + str(sudoku[8,2])
-    coloumn_4 = str(sudoku[0,3]) + str(sudoku[1,3]) + str(sudoku[2,3]) + str(sudoku[3,3]) + str(sudoku[4,3]) + str(sudoku[5,3]) + str(sudoku[6,3]) + str(sudoku[7,3]) + str(sudoku[8,3])
-    coloumn_5 = str(sudoku[0,4]) + str(sudoku[1,4]) + str(sudoku[2,4]) + str(sudoku[3,4]) + str(sudoku[4,4]) + str(sudoku[5,4]) + str(sudoku[6,4]) + str(sudoku[7,4]) + str(sudoku[8,4])
-    coloumn_6 = str(sudoku[0,5]) + str(sudoku[1,5]) + str(sudoku[2,5]) + str(sudoku[3,5]) + str(sudoku[4,5]) + str(sudoku[5,5]) + str(sudoku[6,5]) + str(sudoku[7,5]) + str(sudoku[8,5])
-    coloumn_7 = str(sudoku[0,6]) + str(sudoku[1,6]) + str(sudoku[2,6]) + str(sudoku[3,6]) + str(sudoku[4,6]) + str(sudoku[5,6]) + str(sudoku[6,6]) + str(sudoku[7,6]) + str(sudoku[8,6])
-    coloumn_8 = str(sudoku[0,7]) + str(sudoku[1,7]) + str(sudoku[2,7]) + str(sudoku[3,7]) + str(sudoku[4,7]) + str(sudoku[5,7]) + str(sudoku[6,7]) + str(sudoku[7,7]) + str(sudoku[8,7])
-    coloumn_9 = str(sudoku[0,8]) + str(sudoku[1,8]) + str(sudoku[2,8]) + str(sudoku[3,8]) + str(sudoku[4,8]) + str(sudoku[5,8]) + str(sudoku[6,8]) + str(sudoku[7,8]) + str(sudoku[8,8])
-
-    coloumns = {'coloumn_1':coloumn_1, 'coloumn_2':coloumn_2 , 'coloumn_3':coloumn_3,'coloumn_4':coloumn_4, 'coloumn_5':coloumn_5, 'coloumn_6':coloumn_6,'coloumn_7':coloumn_7, 'coloumn_8':coloumn_8, 'coloumn_9':coloumn_9}
-    rows = {'row_1': row_1, 'row_2': row_2, 'row_3': row_3,'row_4': row_4, 'row_5': row_5, 'row_6': row_6, 'row_7': row_7, 'row_8': row_8, 'row_9': row_9}
-
-    # concatinating the numbers in each row to a string
-    row_1 = str(sudoku[0,0]) + str(sudoku[0,1]) + str(sudoku[0,2]) + str(sudoku[0,3]) + str(sudoku[0,4]) + str(sudoku[0,5]) + str(sudoku[0,6]) + str(sudoku[0,7]) + str(sudoku[0,8])
-    row_2 = str(sudoku[1,0]) + str(sudoku[1,1]) + str(sudoku[1,2]) + str(sudoku[1,3]) + str(sudoku[1,4]) + str(sudoku[1,5]) + str(sudoku[1,6]) + str(sudoku[1,7]) + str(sudoku[1,8])
-    row_3 = str(sudoku[2,0]) + str(sudoku[2,1]) + str(sudoku[2,2]) + str(sudoku[2,3]) + str(sudoku[2,4]) + str(sudoku[2,5]) + str(sudoku[2,6]) + str(sudoku[2,7]) + str(sudoku[2,8])
-    row_4 = str(sudoku[3,0]) + str(sudoku[3,1]) + str(sudoku[3,2]) + str(sudoku[3,3]) + str(sudoku[3,4]) + str(sudoku[3,5]) + str(sudoku[3,6]) + str(sudoku[3,7]) + str(sudoku[3,8])
-    row_5 = str(sudoku[4,0]) + str(sudoku[4,1]) + str(sudoku[4,2]) + str(sudoku[4,3]) + str(sudoku[4,4]) + str(sudoku[4,5]) + str(sudoku[4,6]) + str(sudoku[4,7]) + str(sudoku[4,8])
-    row_6 = str(sudoku[5,0]) + str(sudoku[5,1]) + str(sudoku[5,2]) + str(sudoku[5,3]) + str(sudoku[5,4]) + str(sudoku[5,5]) + str(sudoku[5,6]) + str(sudoku[5,7]) + str(sudoku[5,8])
-    row_7 = str(sudoku[6,0]) + str(sudoku[6,1]) + str(sudoku[6,2]) + str(sudoku[6,3]) + str(sudoku[6,4]) + str(sudoku[6,5]) + str(sudoku[6,6]) + str(sudoku[6,7]) + str(sudoku[6,8])
-    row_8 = str(sudoku[7,0]) + str(sudoku[7,1]) + str(sudoku[7,2]) + str(sudoku[7,3]) + str(sudoku[7,4]) + str(sudoku[7,5]) + str(sudoku[7,6]) + str(sudoku[7,7]) + str(sudoku[7,8])
-    row_9 = str(sudoku[8,0]) + str(sudoku[8,1]) + str(sudoku[8,2]) + str(sudoku[8,3]) + str(sudoku[8,4]) + str(sudoku[8,5]) + str(sudoku[8,6]) + str(sudoku[8,7]) + str(sudoku[8,8])
-
+    coloumns = {}
     coloumn_names = ['coloumn_1', 'coloumn_2', 'coloumn_3','coloumn_4', 'coloumn_5', 'coloumn_6','coloumn_7', 'coloumn_8', 'coloumn_9']
-    row_names = ['row_1', 'row_2', 'row_3','row_4', 'row_5', 'row_6','row_7', 'row_8', 'row_9']
 
-    # looking for a single missing number in the coloumns
+    #for loop over the coloumns extracting the numbers as strings
+    for col_num in range(0,9):
+        coloumn = ''
+        for col_pos in range(0,9):
+             coloumn = coloumn + str(sudoku[col_pos, col_num])
+
+        coloumns[coloumn_names[col_num]] = coloumn
+
+
+    row_names = ['row_1', 'row_2', 'row_3','row_4', 'row_5', 'row_6','row_7', 'row_8', 'row_9']
+    rows = {}
+
+    #for loop over the rows extracting the numbers as strings
+    for row_num in range(0,9):
+        row = ''
+        for row_pos in range(0,9):
+             row = row + str(sudoku[row_num, row_pos])
+
+        rows[row_names[row_num]] = row
+
+    # Matrixes are ordered in the following way: Matrix_row_coloumn, the sudoku matrix is composed of 3x3 submatrices
+    matrix_names = ['matrix_1_1', 'matrix_1_2', 'matrix_1_3', 'matrix_2_1', 'matrix_2_2', 'matrix_2_3', 'matrix_3_1', 'matrix_3_2', 'matrix_3_3']
+    matrices = {}
+
+    for matrix in matrix_names:
+            if matrix[-3] == '1' and matrix[-1] == '1':
+                matrix_slice = np.matrix([[sudoku[0,0],sudoku[0,1],sudoku[0,2]],[sudoku[1,0],sudoku[1,1],sudoku[1,2]],[sudoku[2,0],sudoku[2,1],sudoku[2,2]]])
+                matrices[matrix] = matrix_slice
+            elif matrix[-3] == '1' and matrix[-1] == '2':
+                matrix_slice = np.matrix([[sudoku[0,3],sudoku[0,4],sudoku[0,5]],[sudoku[1,3],sudoku[1,4],sudoku[1,5]],[sudoku[2,3],sudoku[2,4],sudoku[2,5]]])
+                matrices[matrix] = matrix_slice
+            elif matrix[-3] == '1' and matrix[-1] == '3':
+                matrix_slice = np.matrix([[sudoku[0,6],sudoku[0,7],sudoku[0,8]],[sudoku[1,6],sudoku[1,7],sudoku[1,8]],[sudoku[2,6],sudoku[2,7],sudoku[2,8]]])
+                matrices[matrix] = matrix_slice
+            elif matrix[-3] == '2' and matrix[-1] == '1':
+                matrix_slice = np.matrix([[sudoku[3,0],sudoku[3,1],sudoku[3,2]],[sudoku[4,0],sudoku[4,1],sudoku[4,2]],[sudoku[5,0],sudoku[5,1],sudoku[5,2]]])
+                matrices[matrix] = matrix_slice
+            elif matrix[-3] == '2' and matrix[-1] == '2':
+                matrix_slice = np.matrix([[sudoku[3,3],sudoku[3,4],sudoku[3,5]],[sudoku[4,3],sudoku[4,4],sudoku[4,5]],[sudoku[5,3],sudoku[5,4],sudoku[5,5]]])
+                matrices[matrix] = matrix_slice
+            elif matrix[-3] == '2' and matrix[-1] == '3':
+                matrix_slice = np.matrix([[sudoku[3,6],sudoku[3,7],sudoku[3,8]],[sudoku[4,6],sudoku[4,7],sudoku[4,8]],[sudoku[5,6],sudoku[5,7],sudoku[5,8]]])
+                matrices[matrix] = matrix_slice
+            elif matrix[-3] == '3' and matrix[-1] == '1':
+                matrix_slice = np.matrix([[sudoku[6,0],sudoku[6,1],sudoku[6,2]],[sudoku[7,0],sudoku[7,1],sudoku[7,2]],[sudoku[8,0],sudoku[8,1],sudoku[8,2]]])
+                matrices[matrix] = matrix_slice
+            elif matrix[-3] == '3' and matrix[-1] == '2':
+                matrix_slice = np.matrix([[sudoku[6,3],sudoku[6,4],sudoku[6,5]],[sudoku[7,3],sudoku[7,4],sudoku[7,5]],[sudoku[8,3],sudoku[8,4],sudoku[8,5]]])
+            elif matrix[-3] == '3' and matrix[-1] == '3':
+                matrix_slice = np.matrix([[sudoku[6,6],sudoku[6,7],sudoku[6,8]],[sudoku[7,6],sudoku[7,7],sudoku[7,8]],[sudoku[8,6],sudoku[8,7],sudoku[8,8]]])
+                matrices[matrix] = matrix_slice
+
+    # looking for a single missing number in the coloumns and adding if only
+    # one is missing
 
     for coloumn in coloumn_names:
         zeros = coloumns[coloumn].count('0')
@@ -155,7 +178,8 @@ while count_zero > 0:
         else:
             pass
 
-    # looking for a single missing number in the rows
+    # looking for a single missing number in the rows and adding if only one is
+    # missing
 
     for row in row_names:
         zeros = rows[row].count('0')
