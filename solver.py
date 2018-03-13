@@ -79,13 +79,6 @@ def coloumn_missing(sudoku):
         coloumns[coloumn_names[col_num]] = coloumn
     return coloumns, col_missing, coloumn_names
 
-
-dict_pos, dict_pos_name = find_empty(sudoku)
-dict_line_num = find_how_many_empty_in_line(sudoku)
-
-rows,row_mis,row_names = row_missing(sudoku)
-coloumns, col_mis, col_names = coloumn_missing(sudoku)
-
 # dictionary mit missing intersection row coloumn erstellen
 def intersection_row_col(dict_pos,row_mis,col_mis):
     inter_mis_pos = {}
@@ -96,6 +89,23 @@ def intersection_row_col(dict_pos,row_mis,col_mis):
         inter_mis = missing_in_row.intersection(missing_in_coloumn)
         inter_mis_pos[name] = inter_mis
     return inter_mis_pos
+
+def submatrices(sudoku):
+    for y_num_1 in range(0,8,3):
+        y_num_2 = y_num_1 + 1
+        y_num_3 = y_num_1 + 2
+        for x_num_1 in range(0,8,3):
+            x_num_2 = x_num_1 + 1
+            x_num_3 = x_num_1 + 2
+            print(y_num_1,y_num_3, x_num_1,x_num_3)
+
+submatrices(sudoku)
+
+dict_pos, dict_pos_name = find_empty(sudoku)
+dict_line_num = find_how_many_empty_in_line(sudoku)
+
+rows,row_mis,row_names = row_missing(sudoku)
+coloumns, col_mis, col_names = coloumn_missing(sudoku)
 
 intersection_row_col(dict_pos,row_mis, col_mis)
 
