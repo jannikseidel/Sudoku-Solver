@@ -10,6 +10,112 @@ import numpy as np
 sudoku = np.matrix([[2,3,1,0,0,5,9,0,0],[0,4,9,0,0,0,6,2,0],[0,0,0,0,1,0,0,0,3],[9,0,0,5,3,0,0,7,0],[0,0,8,9,7,4,1,0,0],[1,5,0,0,0,6,0,0,9],[7,0,0,0,6,0,0,0,0],[6,1,0,0,0,2,8,5,0],[0,0,2,1,0,0,0,9,6]])
 
 
+def find_empty(sudoku):
+    # finding the position of each empty field in the sudoku
+    # {name:[x_position, y_position]}
+    count_line = 0
+    dict_pos = {}
+    dict_pos_name = []
+    for line in sudoku:
+        line = str(line).strip("[]").replace(" ","")
+        count_zeros = line.count("0")
+        pos_0 = 0
+        for zero in range(count_zeros):
+            pos_0 = line.find("0",pos_0)
+            dict_pos[str(count_line) + "_" + str(zero+1)] = [count_line,pos_0]
+            dict_pos_name.append(str(count_line) + "_" + str(zero+1))
+            pos_0 += 1
+        count_line += 1
+    return dict_pos, dict_pos_name
+
+def find_how_many_empty_in_line(sudoku):
+    # returns a dictionary stating how many empty cells are there per line
+    count_line = 0
+    dict_line_num = {}
+    for line in sudoku:
+        line = str(line).strip("[]").replace(" ","")
+        count_zeros = line.count("0")
+        dict_line_num[str(count_line)]= count_zeros
+        count_line += 1
+    return dict_line_num
+
+def row_missing(sudoku):
+    row_names = ['0', '1', '2','3', '4', '5','6', '7', '8']
+    rows = {}
+    row_missing = {}
+
+    # for loop over the rows extracting the numbers as strings and getting the
+    # set of missing numbers per row
+
+    for row_num in range(0,9):
+        row = ''
+        for row_pos in range(0,9):
+             row = row + str(sudoku[row_num, row_pos]) + " "
+        row = row[: -1]
+        set_nums = set(['1','2','3','4','5','6','7','8','9'])
+        row = row.split()
+        row_set = set(row)
+        rows[row_names[row_num]] = row
+        row_missing[row_names[row_num]] =  set_nums - row_set
+
+    return rows,row_missing,row_names
+
+def coloumn_missing(sudoku):
+    coloumns = {}
+    col_missing = {}
+    coloumn_names = ['0', '1', '2','3', '4', '5','6', '7', '8']
+
+    # for loop over the coloumns extracting the numbers as strings and
+    # extracting the missing numbers as sets
+    for col_num in range(0,9):
+        coloumn = ''
+        for col_pos in range(0,9):
+             coloumn = coloumn + str(sudoku[col_pos, col_num]) +' '
+        coloumn = coloumn[:-1]
+        coloumn = coloumn.split(" ")
+        col_set = set(coloumn)
+        set_nums = set(['1','2','3','4','5','6','7','8','9'])
+        col_missing[coloumn_names[col_num]] = set_nums - col_set
+        coloumns[coloumn_names[col_num]] = coloumn
+    return coloumns, col_missing, coloumn_names
+
+
+dict_pos, dict_pos_name = find_empty(sudoku)
+dict_line_num = find_how_many_empty_in_line(sudoku)
+
+rows,row_mis,row_names = row_missing(sudoku)
+coloumns, col_mis, col_names = coloumn_missing(sudoku)
+
+# dictionary mit missing intersection row coloumn erstellen
+def intersection_row_col(dict_pos,row_mis,col_mis):
+    inter_mis_pos = {}
+    for name in dict_pos_name:
+        x,y = dict_pos[name]
+        missing_in_row = row_mis[str(x)]
+        missing_in_coloumn = col_mis[str(y)]
+        inter_mis = missing_in_row.intersection(missing_in_coloumn)
+        inter_mis_pos[name] = inter_mis
+    return inter_mis_pos
+
+intersection_row_col(dict_pos,row_mis, col_mis)
+
+##################################################################
+# filling in the last missing numbers in the lines of the sudoku #
+##################################################################
+for line in dict_line_num:
+    if dict_line_num[line] == 1:
+        line_sudoku = str(sudoku[int(line)]).strip("[]")
+        set_nums_line = set(line_sudoku.replace("0","").split())
+        set_nums = set(['1','2','3','4','5','6','7','8','9'])
+        missing_num = set_nums - set_nums_line
+        missing_num = int(missing_num.pop())
+        line_sudoku = line_sudoku.replace(" ","")
+        pos_0 = line_sudoku.find("0")
+        sudoku[int(line),pos_0] = missing_num
+
+
+print(sudoku)
+
 # Initializing counter for zeros
 zeros = 1
 
@@ -17,16 +123,6 @@ while zeros > 0:
     # setting counter to zero
     zeros = 0
 
-    coloumns = {}
-    coloumn_names = ['coloumn_1', 'coloumn_2', 'coloumn_3','coloumn_4', 'coloumn_5', 'coloumn_6','coloumn_7', 'coloumn_8', 'coloumn_9']
-
-    # for loop over the coloumns extracting the numbers as strings
-    for col_num in range(0,9):
-        coloumn = ''
-        for col_pos in range(0,9):
-             coloumn = coloumn + str(sudoku[col_pos, col_num])
-
-        coloumns[coloumn_names[col_num]] = coloumn
 
     row_names = ['row_1', 'row_2', 'row_3','row_4', 'row_5', 'row_6','row_7', 'row_8', 'row_9']
     rows = {}
@@ -260,8 +356,7 @@ while zeros > 0:
                 col_position = row_values.find('0')
                 sudoku[8, col_position] = 9
 
-    # check if a submatrix is missing a single number, if yes enter this in the
-    # sudoku matrix
+    # check which numbers are missing in the submatrices
 
     for matrix in matrix_names:
         sub_matrix = matrices[matrix]
@@ -269,9 +364,12 @@ while zeros > 0:
 
         for line in sub_matrix:
             numbers_in_matrix = numbers_in_matrix + str(line).strip('[]')
-
+        positions_matrix = numbers_in_matrix
         numbers_in_matrix = numbers_in_matrix.replace('0','')
         numbers_in_matrix = numbers_in_matrix.replace(' ','')
+
+
+
         print(numbers_in_matrix)
 
 
