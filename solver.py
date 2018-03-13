@@ -80,7 +80,7 @@ def coloumn_missing(sudoku):
     return coloumns, col_missing, coloumn_names
 
 # dictionary mit missing intersection row coloumn erstellen
-def intersection_row_col(dict_pos,row_mis,col_mis):
+def intersection_row_col(dict_pos,row_mis,col_mis, dict_pos_name):
     inter_mis_pos = {}
     for name in dict_pos_name:
         x,y = dict_pos[name]
@@ -91,23 +91,104 @@ def intersection_row_col(dict_pos,row_mis,col_mis):
     return inter_mis_pos
 
 def submatrices(sudoku):
-    for y_num_1 in range(0,8,3):
-        y_num_2 = y_num_1 + 1
-        y_num_3 = y_num_1 + 2
-        for x_num_1 in range(0,8,3):
-            x_num_2 = x_num_1 + 1
-            x_num_3 = x_num_1 + 2
-            print(y_num_1,y_num_3, x_num_1,x_num_3)
+    matrix_names = ['matrix_1_1', 'matrix_1_2', 'matrix_1_3', 'matrix_2_1', 'matrix_2_2', 'matrix_2_3', 'matrix_3_1', 'matrix_3_2', 'matrix_3_3']
+    matrices = {}
 
-submatrices(sudoku)
+    # giving the corresponding row and coloumn numbers to the submatrices in
+    # following order "row1row2row3,coloumn1coloumn2coloumn3"
+    matrices_pos = {}
 
-dict_pos, dict_pos_name = find_empty(sudoku)
-dict_line_num = find_how_many_empty_in_line(sudoku)
 
-rows,row_mis,row_names = row_missing(sudoku)
-coloumns, col_mis, col_names = coloumn_missing(sudoku)
+    # sorting the sudoku in 3x3 submatrices
 
-intersection_row_col(dict_pos,row_mis, col_mis)
+
+    for matrix in matrix_names:
+            if matrix[-3] == '1' and matrix[-1] == '1':
+                matrix_slice = np.matrix([[sudoku[0,0],sudoku[0,1],sudoku[0,2]],[sudoku[1,0],sudoku[1,1],sudoku[1,2]],[sudoku[2,0],sudoku[2,1],sudoku[2,2]]])
+                matrices[matrix] = matrix_slice
+                matrices_pos[matrix] = "012,012"
+            elif matrix[-3] == '1' and matrix[-1] == '2':
+                matrix_slice = np.matrix([[sudoku[0,3],sudoku[0,4],sudoku[0,5]],[sudoku[1,3],sudoku[1,4],sudoku[1,5]],[sudoku[2,3],sudoku[2,4],sudoku[2,5]]])
+                matrices[matrix] = matrix_slice
+                matrices_pos[matrix] = "012,345"
+            elif matrix[-3] == '1' and matrix[-1] == '3':
+                matrix_slice = np.matrix([[sudoku[0,6],sudoku[0,7],sudoku[0,8]],[sudoku[1,6],sudoku[1,7],sudoku[1,8]],[sudoku[2,6],sudoku[2,7],sudoku[2,8]]])
+                matrices[matrix] = matrix_slice
+                matrices_pos[matrix] = "012,678"
+            elif matrix[-3] == '2' and matrix[-1] == '1':
+                matrix_slice = np.matrix([[sudoku[3,0],sudoku[3,1],sudoku[3,2]],[sudoku[4,0],sudoku[4,1],sudoku[4,2]],[sudoku[5,0],sudoku[5,1],sudoku[5,2]]])
+                matrices[matrix] = matrix_slice
+                matrices_pos[matrix] = "345,012"
+            elif matrix[-3] == '2' and matrix[-1] == '2':
+                matrix_slice = np.matrix([[sudoku[3,3],sudoku[3,4],sudoku[3,5]],[sudoku[4,3],sudoku[4,4],sudoku[4,5]],[sudoku[5,3],sudoku[5,4],sudoku[5,5]]])
+                matrices[matrix] = matrix_slice
+                matrices_pos[matrix] = "345,345"
+            elif matrix[-3] == '2' and matrix[-1] == '3':
+                matrix_slice = np.matrix([[sudoku[3,6],sudoku[3,7],sudoku[3,8]],[sudoku[4,6],sudoku[4,7],sudoku[4,8]],[sudoku[5,6],sudoku[5,7],sudoku[5,8]]])
+                matrices[matrix] = matrix_slice
+                matrices_pos[matrix] = "345,678"
+            elif matrix[-3] == '3' and matrix[-1] == '1':
+                matrix_slice = np.matrix([[sudoku[6,0],sudoku[6,1],sudoku[6,2]],[sudoku[7,0],sudoku[7,1],sudoku[7,2]],[sudoku[8,0],sudoku[8,1],sudoku[8,2]]])
+                matrices[matrix] = matrix_slice
+                matrices_pos[matrix] = "678,012"
+            elif matrix[-3] == '3' and matrix[-1] == '2':
+                matrix_slice = np.matrix([[sudoku[6,3],sudoku[6,4],sudoku[6,5]],[sudoku[7,3],sudoku[7,4],sudoku[7,5]],[sudoku[8,3],sudoku[8,4],sudoku[8,5]]])
+                matrices[matrix] = matrix_slice
+                matrices_pos[matrix] = "678,345"
+            elif matrix[-3] == '3' and matrix[-1] == '3':
+                matrix_slice = np.matrix([[sudoku[6,6],sudoku[6,7],sudoku[6,8]],[sudoku[7,6],sudoku[7,7],sudoku[7,8]],[sudoku[8,6],sudoku[8,7],sudoku[8,8]]])
+                matrices[matrix] = matrix_slice
+                matrices_pos[matrix] = "678,678"
+
+    return matrices, matrices_pos
+
+
+def intersectio_mis_submat(matrices,matrices_pos,dict_pos,dict_pos_name, inter_mis_pos):
+    keys_mat = list(matrices.keys())
+    # itterating over the submatrices
+    for key in keys_mat:
+        numbers = str(matrices[key]).replace("[","").replace("]","").replace("\n","").split()
+        matrix_pos = matrices_pos[key].split(",")
+        for pos in dict_pos_name:
+            position = dict_pos[pos]
+            if str(position[0]) in matrix_pos[0] and str(position[1]) in matrix_pos[1]:
+                numbers_set = set()
+                for number in numbers:
+                    numbers_set.add(int(number))
+                inter_mat_row_col = inter_mis_pos[pos].intersection(numbers_set)
+                inter_mat_row_col = list(inter_mat_row_col)
+                if len(inter_mat_row_col) == 1:
+                    sudoku[dict_pos[pos][1],dict_pos[pos][0]] = inter_mat_row_col[0]
+
+
+count_zeros = 0
+for line in sudoku:
+    line = str(line).strip("[]")
+    count_zeros += line.count("0")
+    print(count_zeros)
+
+while count_zeros != 0:
+    count_zeros = 0
+    for line in sudoku:
+        line = str(line).strip("[]")
+        count_zeros += line.count("0")
+    print(count_zeros)
+
+    dict_pos, dict_pos_name = find_empty(sudoku)
+    dict_line_num = find_how_many_empty_in_line(sudoku)
+
+    rows,row_mis,row_names = row_missing(sudoku)
+    coloumns, col_mis, col_names = coloumn_missing(sudoku)
+
+    matrices, matrices_pos = submatrices(sudoku)
+
+    inter_mis_pos = intersection_row_col(dict_pos,row_mis, col_mis,dict_pos_name)
+    intersectio_mis_submat(matrices,matrices_pos, dict_pos, dict_pos_name, inter_mis_pos)
+
+#------------------------------------------------------------------------------#
+# Wie bekomme ich es hin die "Constraints" klar zu machen?!
+
+
 
 ##################################################################
 # filling in the last missing numbers in the lines of the sudoku #
@@ -150,39 +231,7 @@ while zeros > 0:
         rows[row_names[row_num]] = row
 
     # Matrixes are ordered in the following way: Matrix_row_coloumn, the sudoku matrix is composed of 3x3 submatrices
-    matrix_names = ['matrix_1_1', 'matrix_1_2', 'matrix_1_3', 'matrix_2_1', 'matrix_2_2', 'matrix_2_3', 'matrix_3_1', 'matrix_3_2', 'matrix_3_3']
-    matrices = {}
 
-    # sorting the sudoku in 3x3 submatrices
-
-    for matrix in matrix_names:
-            if matrix[-3] == '1' and matrix[-1] == '1':
-                matrix_slice = np.matrix([[sudoku[0,0],sudoku[0,1],sudoku[0,2]],[sudoku[1,0],sudoku[1,1],sudoku[1,2]],[sudoku[2,0],sudoku[2,1],sudoku[2,2]]])
-                matrices[matrix] = matrix_slice
-            elif matrix[-3] == '1' and matrix[-1] == '2':
-                matrix_slice = np.matrix([[sudoku[0,3],sudoku[0,4],sudoku[0,5]],[sudoku[1,3],sudoku[1,4],sudoku[1,5]],[sudoku[2,3],sudoku[2,4],sudoku[2,5]]])
-                matrices[matrix] = matrix_slice
-            elif matrix[-3] == '1' and matrix[-1] == '3':
-                matrix_slice = np.matrix([[sudoku[0,6],sudoku[0,7],sudoku[0,8]],[sudoku[1,6],sudoku[1,7],sudoku[1,8]],[sudoku[2,6],sudoku[2,7],sudoku[2,8]]])
-                matrices[matrix] = matrix_slice
-            elif matrix[-3] == '2' and matrix[-1] == '1':
-                matrix_slice = np.matrix([[sudoku[3,0],sudoku[3,1],sudoku[3,2]],[sudoku[4,0],sudoku[4,1],sudoku[4,2]],[sudoku[5,0],sudoku[5,1],sudoku[5,2]]])
-                matrices[matrix] = matrix_slice
-            elif matrix[-3] == '2' and matrix[-1] == '2':
-                matrix_slice = np.matrix([[sudoku[3,3],sudoku[3,4],sudoku[3,5]],[sudoku[4,3],sudoku[4,4],sudoku[4,5]],[sudoku[5,3],sudoku[5,4],sudoku[5,5]]])
-                matrices[matrix] = matrix_slice
-            elif matrix[-3] == '2' and matrix[-1] == '3':
-                matrix_slice = np.matrix([[sudoku[3,6],sudoku[3,7],sudoku[3,8]],[sudoku[4,6],sudoku[4,7],sudoku[4,8]],[sudoku[5,6],sudoku[5,7],sudoku[5,8]]])
-                matrices[matrix] = matrix_slice
-            elif matrix[-3] == '3' and matrix[-1] == '1':
-                matrix_slice = np.matrix([[sudoku[6,0],sudoku[6,1],sudoku[6,2]],[sudoku[7,0],sudoku[7,1],sudoku[7,2]],[sudoku[8,0],sudoku[8,1],sudoku[8,2]]])
-                matrices[matrix] = matrix_slice
-            elif matrix[-3] == '3' and matrix[-1] == '2':
-                matrix_slice = np.matrix([[sudoku[6,3],sudoku[6,4],sudoku[6,5]],[sudoku[7,3],sudoku[7,4],sudoku[7,5]],[sudoku[8,3],sudoku[8,4],sudoku[8,5]]])
-                matrices[matrix] = matrix_slice
-            elif matrix[-3] == '3' and matrix[-1] == '3':
-                matrix_slice = np.matrix([[sudoku[6,6],sudoku[6,7],sudoku[6,8]],[sudoku[7,6],sudoku[7,7],sudoku[7,8]],[sudoku[8,6],sudoku[8,7],sudoku[8,8]]])
-                matrices[matrix] = matrix_slice
 
     # looking for a single missing number in the coloumns and adding if only
     # one is missing
