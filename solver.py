@@ -47,6 +47,8 @@ while zeros > 0:
     matrix_names = ['matrix_1_1', 'matrix_1_2', 'matrix_1_3', 'matrix_2_1', 'matrix_2_2', 'matrix_2_3', 'matrix_3_1', 'matrix_3_2', 'matrix_3_3']
     matrices = {}
 
+    # sorting the sudoku in 3x3 submatrices
+
     for matrix in matrix_names:
             if matrix[-3] == '1' and matrix[-1] == '1':
                 matrix_slice = np.matrix([[sudoku[0,0],sudoku[0,1],sudoku[0,2]],[sudoku[1,0],sudoku[1,1],sudoku[1,2]],[sudoku[2,0],sudoku[2,1],sudoku[2,2]]])
