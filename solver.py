@@ -1,15 +1,27 @@
 # script for solving sudokus, entered in a 9x9 Matrix
 ################################################################################
 #
-#   ToDo:   Checken ob eine Zelle so geblockt wird dass eindeutig bestimmbar ist
-#           welche Zahl eingesetz werden kann
-#
 ################################################################################
 import numpy as np
+# inserting the sudoku in commaseperated txt, empty fields as 0s, each row in a 
+# seperate line of the txt file
+in_file = open("sudoku.txt", "r")
+line_name = ["line_1","line_2","line_3","line_4","line_5","line_6","line_7","line_8","line_9",]
+count = 0
+line_dict = {}
+for line in in_file:
+    line = line.strip().split(",")
+    count_line = 0
+    for n in line:
+        line[count_line] = int(n)
+        count_line += 1
+    print(line)
+    line_dict[line_name[count]] = line
+    count += 1
 
-sudoku = np.matrix([[2,3,1,0,0,5,9,0,0],[0,4,9,0,0,0,6,2,0],[0,0,0,0,1,0,0,0,3],[9,0,0,5,3,0,0,7,0],[0,0,8,9,7,4,1,0,0],[1,5,0,0,0,6,0,0,9],[7,0,0,0,6,0,0,0,0],[6,1,0,0,0,2,8,5,0],[0,0,2,1,0,0,0,9,6]])
-
-
+line_dict
+sudoku = np.matrix([line_dict['line_1'],line_dict['line_2'],line_dict['line_3'],line_dict['line_4'],line_dict['line_5'],line_dict['line_6'],line_dict['line_7'],line_dict['line_8'],line_dict['line_9']])
+sudoku
 def find_empty(sudoku):
     # finding the position of each empty field in the sudoku
     # {name:[x_position, y_position]}
@@ -143,22 +155,56 @@ def submatrices(sudoku):
     return matrices, matrices_pos
 
 
-def intersectio_mis_submat(matrices,matrices_pos,dict_pos,dict_pos_name, inter_mis_pos):
+def int_mis_submat(matrices,matrices_pos,dict_pos,dict_pos_name, inter_mis_pos,sudoku):
+
+    # solving the sudoku by calculating the intersection between missing numbers
+    # at the positions and in the submatrices or, if only on solution at a
+    # position is possible inserting this one at the position
+
     keys_mat = list(matrices.keys())
     # itterating over the submatrices
     for key in keys_mat:
         numbers = str(matrices[key]).replace("[","").replace("]","").replace("\n","").split()
         matrix_pos = matrices_pos[key].split(",")
+
+        # calculating the set of numbers which are in one sub_matrix
         for pos in dict_pos_name:
             position = dict_pos[pos]
             if str(position[0]) in matrix_pos[0] and str(position[1]) in matrix_pos[1]:
+                print(position[0] , matrix_pos[0], position[1], matrix_pos[1])
                 numbers_set = set()
                 for number in numbers:
-                    numbers_set.add(int(number))
-                inter_mat_row_col = inter_mis_pos[pos].intersection(numbers_set)
+                    numbers_set.add(str(number))
+                # set of possible numbers
+                set_nums = set(['1','2','3','4','5','6','7','8','9'])
+                # set of missing numbers in matrix
+                mis_numbers = set_nums.difference(numbers_set)
+                print("Numbers in Matrix")
+                print(numbers_set)
+                print("missing numbers")
+                print(mis_numbers)
+                print("missing numbers at position")
+                print(inter_mis_pos[pos])
+                # intersection between missing numbers at the position and in the matrix
+                inter_mat_row_col = inter_mis_pos[pos].intersection(mis_numbers)
+                print(inter_mat_row_col)
                 inter_mat_row_col = list(inter_mat_row_col)
-                if len(inter_mat_row_col) == 1:
-                    sudoku[dict_pos[pos][1],dict_pos[pos][0]] = inter_mat_row_col[0]
+                position_missing = list(inter_mis_pos[pos])
+
+                if len(inter_mat_row_col) == 1 :
+                    print("before")
+                    print(sudoku[position[0],position[1]])
+                    sudoku[position[0],position[1]] = int(inter_mat_row_col.pop())
+                    print("after")
+                    print(sudoku[position[0],position[1]])
+                elif len(position_missing) == 1:
+                    print("before position")
+                    print(sudoku[position[0],position[1]])
+                    sudoku[position[0],position[1]] = int(position_missing.pop())
+                    print("after position")
+
+
+    return sudoku
 
 
 count_zeros = 0
@@ -172,6 +218,7 @@ while count_zeros != 0:
     for line in sudoku:
         line = str(line).strip("[]")
         count_zeros += line.count("0")
+    print("new round")
     print(count_zeros)
 
     dict_pos, dict_pos_name = find_empty(sudoku)
@@ -183,255 +230,11 @@ while count_zeros != 0:
     matrices, matrices_pos = submatrices(sudoku)
 
     inter_mis_pos = intersection_row_col(dict_pos,row_mis, col_mis,dict_pos_name)
-    intersectio_mis_submat(matrices,matrices_pos, dict_pos, dict_pos_name, inter_mis_pos)
-
-#------------------------------------------------------------------------------#
-# Wie bekomme ich es hin die "Constraints" klar zu machen?!
+    sudoku = int_mis_submat(matrices,matrices_pos, dict_pos, dict_pos_name, inter_mis_pos, sudoku)
 
 
-
-##################################################################
-# filling in the last missing numbers in the lines of the sudoku #
-##################################################################
-for line in dict_line_num:
-    if dict_line_num[line] == 1:
-        line_sudoku = str(sudoku[int(line)]).strip("[]")
-        set_nums_line = set(line_sudoku.replace("0","").split())
-        set_nums = set(['1','2','3','4','5','6','7','8','9'])
-        missing_num = set_nums - set_nums_line
-        missing_num = int(missing_num.pop())
-        line_sudoku = line_sudoku.replace(" ","")
-        pos_0 = line_sudoku.find("0")
-        sudoku[int(line),pos_0] = missing_num
-
-
-print(sudoku)
-
-# Initializing counter for zeros
-zeros = 1
-
-while zeros > 0:
-    # setting counter to zero
-    zeros = 0
-
-
-    row_names = ['row_1', 'row_2', 'row_3','row_4', 'row_5', 'row_6','row_7', 'row_8', 'row_9']
-    rows = {}
-
-    # for loop over the rows extracting the numbers as strings and counting the
-    # 0s in them
-
-    for row_num in range(0,9):
-        row = ''
-        for row_pos in range(0,9):
-             row = row + str(sudoku[row_num, row_pos])
-        zeros = zeros + row.count('0')
-        row = row.replace('0','')
-        print(row)
-        rows[row_names[row_num]] = row
-
-    # Matrixes are ordered in the following way: Matrix_row_coloumn, the sudoku matrix is composed of 3x3 submatrices
-
-
-    # looking for a single missing number in the coloumns and adding if only
-    # one is missing
-
-    for coloumn_name in coloumn_names:
-        coloumn = coloumns[coloumn_name]
-        if len(coloumn) == 8:
-            value = 0
-            if '1' not in coloumn:
-                value = 1
-            elif '2' not in coloumn:
-                value = 2
-            elif '3' not in coloumn:
-                value = 3
-            elif '4' not in coloumn:
-                value = 4
-            elif '5' not in coloumn:
-                value = 5
-            elif '6' not in coloumn:
-                value = 6
-            elif '7' not in coloumn:
-                value = 7
-            elif '8' not in coloumn:
-                value = 8
-            elif '9' not in coloumn:
-                value = 9
-
-            col_num = coloumn_name[-1]
-
-            if col_num == '1':
-                row_position = 0
-                col_values = ''
-                for position in range(0,8):
-                    col_values += str(sudoku[postion ,0])
-                row_position = col_values.find('0')
-                sudoku[row_position, 0] = 1
-            elif col_num == '2':
-                row_position = 0
-                col_values = ''
-                for position in range(0,8):
-                    col_values += str(sudoku[postion ,1])
-                row_position = col_values.find('0')
-                sudoku[row_position, 1] = 2
-            elif col_num == '3':
-                row_position = 0
-                col_values = ''
-                for position in range(0,8):
-                    col_values += str(sudoku[postion ,2])
-                row_position = col_values.find('0')
-                sudoku[row_position, 2] = 3
-            elif col_num == '4':
-                row_position = 0
-                col_values = ''
-                for position in range(0,8):
-                    col_values += str(sudoku[postion ,3])
-                row_position = col_values.find('0')
-                sudoku[row_position, 3] = 4
-            elif col_num == '5':
-                row_position = 0
-                col_values = ''
-                for position in range(0,8):
-                    col_values += str(sudoku[postion ,4])
-                row_position = col_values.find('0')
-                sudoku[row_position, 4] = 5
-            elif col_num == '6':
-                row_position = 0
-                col_values = ''
-                for position in range(0,8):
-                    col_values += str(sudoku[postion ,5])
-                row_position = col_values.find('0')
-                sudoku[row_position, 5] = 6
-            elif col_num == '7':
-                row_position = 0
-                col_values = ''
-                for position in range(0,8):
-                    col_values += str(sudoku[postion ,6])
-                row_position = col_values.find('0')
-                sudoku[row_position, 6] = 7
-            elif col_num == '8':
-                row_position = 0
-                col_values = ''
-                for position in range(0,8):
-                    col_values += str(sudoku[postion ,7])
-                row_position = col_values.find('0')
-                sudoku[row_position, 7] = 8
-            elif col_num == '9':
-                row_position = 0
-                col_values = ''
-                for position in range(0,8):
-                    col_values += str(sudoku[postion ,8])
-                row_position = col_values.find('0')
-                sudoku[row_position, 8] = 9
-
-    # looking for a single missing number in the rows and adding if only
-    # one is missing
-
-    for row_name in row_names:
-        row = rows[row_name]
-        if len(row) == 8:
-            value = 0
-            if '1' not in row:
-                value = 1
-            elif '2' not in row:
-                value = 2
-            elif '3' not in row:
-                value = 3
-            elif '4' not in row:
-                value = 4
-            elif '5' not in row:
-                value = 5
-            elif '6' not in row:
-                value = 6
-            elif '7' not in row:
-                value = 7
-            elif '8' not in row:
-                value = 8
-            elif '9' not in row:
-                value = 9
-
-            row_num = row_name[-1]
-
-            if row_num == '1':
-                col_position = 0
-                row_values = ''
-                for position in range(0,8):
-                    row_values += str(sudoku[0,postion])
-                col_position = row_values.find('0')
-                sudoku[0, col_position] = 1
-            elif row_num == '2':
-                col_position = 0
-                row_values = ''
-                for position in range(0,8):
-                    row_values += str(sudoku[1,postion])
-                col_position = row_values.find('0')
-                sudoku[1, col_position] = 2
-            elif col_num == '3':
-                col_position = 0
-                row_values = ''
-                for position in range(0,8):
-                    row_values += str(sudoku[2,postion])
-                col_position = row_values.find('0')
-                sudoku[2, col_position] = 3
-            elif col_num == '4':
-                col_position = 0
-                row_values = ''
-                for position in range(0,8):
-                    row_values += str(sudoku[3,postion])
-                col_position = row_values.find('0')
-                sudoku[3, col_position] = 4
-            elif col_num == '5':
-                col_position = 0
-                row_values = ''
-                for position in range(0,8):
-                    row_values += str(sudoku[4,postion])
-                col_position = row_values.find('0')
-                sudoku[4, col_position] = 5
-            elif col_num == '6':
-                col_position = 0
-                row_values = ''
-                for position in range(0,8):
-                    row_values += str(sudoku[5,postion])
-                col_position = row_values.find('0')
-                sudoku[5, col_position] = 6
-            elif col_num == '7':
-                col_position = 0
-                row_values = ''
-                for position in range(0,8):
-                    row_values += str(sudoku[6,postion])
-                col_position = row_values.find('0')
-                sudoku[6, col_position] = 7
-            elif col_num == '8':
-                col_position = 0
-                row_values = ''
-                for position in range(0,8):
-                    row_values += str(sudoku[7,postion])
-                col_position = row_values.find('0')
-                sudoku[7, col_position] = 8
-            elif col_num == '9':
-                col_position = 0
-                row_values = ''
-                for position in range(0,8):
-                    row_values += str(sudoku[8,postion])
-                col_position = row_values.find('0')
-                sudoku[8, col_position] = 9
-
-    # check which numbers are missing in the submatrices
-
-    for matrix in matrix_names:
-        sub_matrix = matrices[matrix]
-        numbers_in_matrix = ''
-
-        for line in sub_matrix:
-            numbers_in_matrix = numbers_in_matrix + str(line).strip('[]')
-        positions_matrix = numbers_in_matrix
-        numbers_in_matrix = numbers_in_matrix.replace('0','')
-        numbers_in_matrix = numbers_in_matrix.replace(' ','')
-
-
-
-        print(numbers_in_matrix)
-
-
-    break
+save = open("sudoku_solved.txt","w")
+for line in sudoku:
+    save.write(str(line).strip("[]"))
+    save.write("\n")
+save.close()
