@@ -5,3 +5,5 @@ We'll see if it works
 
 ---
 Easy Sudokus can be solved, harder ones can be partly solved
+---
+Intermediate Sudokus can be solved most of the time, debugging
