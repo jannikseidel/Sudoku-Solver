@@ -204,21 +204,21 @@ def eval_zeros_all_others(sudoku,dict_pos,mis_pos,lines,coloumns,matrices):
                     sub_line3 = str(matrix[line_pos.find(line_pos[0])]).strip("[]").replace('\'','')
                     sub_line1 = sub_line1.replace(' ','')
                     sub_line2 = sub_line2.replace(' ','')
-                    sub_line3 = sub_line2.replace(' ','')
+                    sub_line3 = sub_line3.replace(' ','')
             elif sub_mat_pos[0] == 1:
                     sub_line1 = str(matrix[line_pos.find(line_pos[0])]).strip("[]").replace('\'','')
                     sub_line2 = str(matrix[line_pos.find(line_pos[2])]).strip("[]").replace('\'','')
                     sub_line3 = str(matrix[line_pos.find(line_pos[1])]).strip("[]").replace('\'','')
                     sub_line1 = sub_line1.replace(' ','')
                     sub_line2 = sub_line2.replace(' ','')
-                    sub_line3 = sub_line2.replace(' ','')
+                    sub_line3 = sub_line3.replace(' ','')
             elif sub_mat_pos[0] == 2:
                     sub_line1 = str(matrix[line_pos.find(line_pos[0])]).strip("[]").replace('\'','')
                     sub_line2 = str(matrix[line_pos.find(line_pos[1])]).strip("[]").replace('\'','')
                     sub_line3 = str(matrix[line_pos.find(line_pos[2])]).strip("[]").replace('\'','')
                     sub_line1 = sub_line1.replace(' ','')
                     sub_line2 = sub_line2.replace(' ','')
-                    sub_line3 = sub_line2.replace(' ','')
+                    sub_line3 = sub_line3.replace(' ','')
 
             if sub_mat_pos[1] == 0:
                 subcol1 = ""
@@ -262,51 +262,311 @@ def eval_zeros_all_others(sudoku,dict_pos,mis_pos,lines,coloumns,matrices):
             coloumn2 = coloumns[col_pos[1]]
             coloumn3 = coloumns[str(position[1])]
 
+            # each position in the submatrix is checked for possible solutions
+
+            if sub_mat_pos[0] == 0 and sub_mat_pos[1] == 0:
+                if number in line1 and number in line2 and number in coloumn1 and number in coloumn2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 1")
+                    print(position)
+                elif subcol3.count("0") == 1 and number in coloumn1 and number in coloumn2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 2")
+                    print(position)
+                elif sub_line3[1] != '0' and sub_line3[2] != '0' and number in line1 and number in line2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 3")
+                    print(position)
+                elif sub_line2.count('0') == 0 and number in line1 and number in coloumn1 and number in coloumn2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 4")
+                    print(position)
+                elif sub_line1.count("0") == 0 and number in line2 and number in coloumn1 and number in coloummn2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 5")
+                    print(position)
+                elif subcol1.count('0') == 0 and number in coloumn2 and number in line1 and number in line2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 6")
+                    print(position)
+                elif subcol2.count('0') == 0 and number in coloumn1 and number in line1 and number in line2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 7")
+                    print(position)
+                elif subcol3[1] != '0' and number in coloumn1 and number in coloumn2 and number in line2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 8")
+                elif sub_line3[1] != '0' and number in coloumn2 and number in line1 and number in line2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 9")
+                    print(position)
+                elif subcol3[2] != '0' and number in coloumn1 and number in line1 and number in line2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 10")
+                    print(position)
+                elif subcol3[2] != '0' and number in line1 and number in coloumn1 and number in coloumn2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 11")
+                    print(position)
+                elif sub_line2.count("0") == 0 and sub_line3[1] != '0' and sub_line3[2] != '0' and number in line1 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 12")
+                    print(position)
+
+            elif sub_mat_pos[0] == 0 and sub_mat_pos[1] == 1:
+                if number in line1 and number in line2 and number in coloumn1 and number in coloumn2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 13")
+                    print(position)
+                elif number in line1 and number in line2 and number in coloumn2 and sub_line3[1] != "0" and number not in line3 and number not in coloumn3:
+                     sudoku[position[0], position[1]] = int(number)
+                     print("WORKED! 14")
+                     print(position)
+                elif number in coloumn1 and number in coloumn2 and sub_line2[0] != '0' and sub_line2[2] != '0' and number in line1 and number not in line3 and number not in coloumn3:
+                     sudoku[position[0], position[1]] = int(number)
+                     print("WORKED! 15")
+                     print(position)
+                elif sub_line3[2] != '0' and number in coloumn1 and number in line1 and number in line2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 16")
+                    print(position)
+                elif number in line1 and number in line2 and sub_line3[0] is not "0" and sub_line3[2] is not '0' and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 17")
+                    print(position)
+                elif number in coloumn1 and number in coloumn2 and number in line2 and sub_line1[1] != "0" and number not in line3 and number not in coloumn3:
+                     sudoku[position[0], position[1]] = int(number)
+                     print("WORKED! 18")
+                     print(position)
+                elif sub_mat_pos[0] == 0 and sub_mat_pos[1] == 1 and sub_line3[0] != '0' and number in coloumn2 and number in line1 and number in line2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 19")
+                    print(position)
+
+                pass
+            elif sub_mat_pos[0] == 0 and sub_mat_pos[1] == 2:
+                if number in line1 and number in line2 and number in coloumn1 and number in coloumn2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 20")
+                    print(position)
+                elif number in line1 and number in line2 and sub_line3.count('0') == 1 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 21")
+                    print(position)
+                elif subcol3[1] != "0" and number in line2 and number in coloumn1 and number in coloumn2 and number not in coloumn3 and number not in line3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 22")
+                    print(position)
+                elif subcol2.count('0') == 0 and subcol3.count('0') == 1 and number in coloumn1 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 22a")
+                    print(position)
+                elif subcol1.count('0') == 0 and subcol3.count("0") == 1 and number in coloumn2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 22b")
+                    print(position)
+                pass
+            elif sub_mat_pos[0] == 1 and sub_mat_pos[1] == 0:
+                if number in line1 and number in line2 and number in coloumn1 and number in coloumn2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 23")
+                    print(position)
+                elif sub_line2.count("0") == 0 and sub_line3.count('0') == 1 and number in line1 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 24")
+                    print(position)
+
+
+                pass
+            elif sub_mat_pos[0] == 1 and sub_mat_pos[1] == 1:
+                if number in line1 and number in line2 and number in coloumn1 and number in coloumn2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 25")
+                    print(position)
+                elif number in coloumn1 and number in coloumn2 and sub_line1[1] != '0' and sub_line2[1] != '0' and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 26")
+                    print(position)
+                elif number in line1 and number in line2 and sub_line3[0] is not "0" and sub_line3[2] is not '0' and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 27")
+                    print(position)
+                elif number in line1 and number in coloumn1 and number in coloumn2 and sub_line2[1] != '0' and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 27a")
+                    print(position)
+                elif number in line2 and number in coloumn1 and number in coloumn2 and sub_line1[1] != '0' and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 27b")
+                    print(position)
+                elif number in line1 and number in line2 and number in coloumn1 and subcol2[1] !="0" and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 27c")
+                    print(position)
+                elif number in line1 and number in line2 and number in coloumn2 and subcol1[1] != '0' and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 27d")
+                    print(position)
+
+                pass
+            elif sub_mat_pos[0] == 1 and sub_mat_pos[1] == 2:
+                if number in line1 and number in line2 and number in coloumn1 and number in coloumn2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 28")
+                    print(position)
+                elif sub_line3[0] != '0'  and number in line1 and number in line2 and number in coloumn2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 29")
+                    print(position)
+                elif number in line1 and number in line2 and number in coloumn1 and sub_line3[1] != "0" and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 30")
+                    print(position)
+                elif sub_line2.count("0") == 0 and sub_line3.count('0') == 1 and number in line1 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 31")
+                    print(position)
+                elif number in line1 and number in line2 and number in coloumn1 and number in coloumn2 and number not in coloumn3 and number not in line3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 32")
+                    print(position)
+                pass
+            elif sub_mat_pos[0] == 2 and sub_mat_pos[1] == 0:
+                if number in line1 and number in line2 and number in coloumn1 and number in coloumn2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 33")
+                    print(position)
+                elif subcol2.count("0") == 0 and number in coloumn1 and subcol3.count('0') == 1 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 34")
+                    print(position)
+                elif number in line1 and number in line2 and number in coloumn2 and sub_line3[1] != '0' and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 34a")
+                    print(position)
+                elif number in line1 and number in line2 and number in coloumn1 and sub_line3[2] != '0' and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 34b")
+                    print(position)
+                elif number in coloumn1 and number in coloumn2 and number in line1 and subcol3[1] != '0' and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 34c")
+                    print(position)
+                elif number in coloumn1 and number in coloumn2 and number in line2 and subcol3[0]!= '0' and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 34d")
+                    print(position)
+                elif number in line1 and number in line2 and sub_line3.count('0') == 1 and number not in line3 :
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 35a")
+                    print(position)
+                elif number in coloumn1 and number in coloumn2 and subcol3.count('0') == 1 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 35b")
+                    print(position)
+                pass
+            elif sub_mat_pos[0] == 2 and sub_mat_pos[1] == 1:
+                if number in line1 and number in line2 and number in coloumn1 and number in coloumn2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 35")
+                    print(position)
+                elif number in coloumn1 and number in coloumn2 and subcol3[0] != '0' and number in line2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 36")
+                    print(position)
+                elif number in coloumn1 and number in coloumn2 and subcol3[1] != '0' and number in line1 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 36a")
+                    print(position)
+                elif number in line1 and number in line2 and sub_line3[0] != "0" and number in coloumn2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 37")
+                    print(position)
+                elif number in line1 and number in line2 and number in coloumn1 and number in coloumn2 and number not in coloumn3 and number not in line3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 36")
+                    print(position)
+                elif sub_line3[2] != "0" and number in coloumn1 and number in line1 and number in line2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 37")
+                    print(position)
+                elif number in line1 and number in line2 and int(sub_line3[0]) is not 0 and int(sub_line3[2]) is not 0 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 38")
+                    print(position)
+                elif number in coloumn1 and number in coloumn2 and number in line2 and sub_line2[1] != "0" and number not in line3 and number not in coloumn3:
+                     sudoku[position[0], position[1]] = int(number)
+                     print("WORKED! 39")
+                     print(position)
+                pass
+            elif sub_mat_pos[0] == 2 and sub_mat_pos[1] == 2:
+                if number in line1 and number in line2 and number in coloumn1 and number in coloumn2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 40")
+                    print(position)
+                elif sub_line3[1] != "0" and number in coloumn1 and number in line1 and number in line2 and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 41")
+                    print(position)
+                elif number in coloumn1 and number in coloumn2 and subcol3[0] != "0" and subcol3[1] != "0" and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 42")
+                    print(position)
+                elif number in line2 and number in coloumn2 and sub_line3.count("0") == 1 and sub_line1[0] != "0" and sub_line1[2] != "0" and number not in line3 and number not in coloumn3:
+                    sudoku[position[0], position[1]] = int(number)
+                    print("WORKED! 43")
+                    print(position)
+                pass
+
+
+
+
             if sub_line1.count('0') == 0 and number in line2 and number in coloumn1 and number in coloumn2 and ((number not in coloumn3) and (number not in line3)):
                 sudoku[position[0], position[1]] = int(number)
-                print("WORKED!")
+                print("WORKED! 44")
+                print(position)
             elif sub_line2.count('0') == 0 and number in line1 and number in coloumn1 and number in coloumn2 and ((number not in coloumn3) and (number not in line3)):
                 sudoku[position[0], position[1]] = int(number)
-                print("WORKED!")
+                print("WORKED! 45")
+                print(position)
             elif subcol1.count('0') == 0 and number in line1 and number in line2 and number in coloumn2 and ((number not in coloumn3) and (number not in line3)):
                 sudoku[position[0], position[1]] = int(number)
-                print("WORKED!")
+                print("WORKED! 46")
+                print(position)
             elif subcol2.count('0') == 0 and number in line1 and number in line2 and number in coloumn1 and ((number not in coloumn3) and (number not in line3)):
                 sudoku[position[0], position[1]] = int(number)
-                print("WORKED!")
+                print("WORKED! 47")
+                print(position)
             elif subcol1.count('0') == 0 and number in line1 and number in line2 and number in coloumn2 and ((number not in coloumn3) and (number not in line3)):
                 sudoku[position[0], position[1]] = int(number)
-                print("WORKED!")
+                print("WORKED! 48")
+                print(position)
 
             elif subcol1.count("0") == 0 and subcol2.count("0") == 0 and sub_line1.count('0') == 0 and sub_line2.count("0") == 0 and ((number not in coloumn3) and (number not in line3)):
                 sudoku[position[0], position[1]] = int(number)
-                print("WORKED!")
+                print("WORKED! 49")
+                print(position)
                 # evaluate if only one is missing in line or coloumn and
                 # all others are blocked for this number
 
                 #######################################################
                 # MACHT FEHLER! LOGIK NICHT EINEINDEUTIG???? HIER LIEGT DAS PROBLEM ... Faelle eindeutig beschreiben!
                 #######################################################
-            #elif (subcol3.count("0") == 1) and ((number in coloumn1) and (number in coloumn2)) and ((number not in coloumn3) and (number not in line3)):
-            #    sudoku[position[0], position[1]] = int(number)
-            #    print("WORKED!")
-            #    print(position)
+            elif (subcol3.count("0") == 1 and number in line1 and number in line2 and number not in line3 and number not in coloumn3) and (number in coloumn1 and number in coloumn2):
+                sudoku[position[0], position[1]] = int(number)
+                print("WORKED! 50")
+                print(position)
 
-            #elif (sub_line3.count("0") == 1) and ((number in line1) and (number in line2)) and ((number not in coloumn3) and (number not in line3)):
-            #    sudoku[position[0], position[1]] = int(number)
-            #    print("WORKED!")
-            #    print(position)
+            elif sub_line3.count("0") == 1 and number in coloumn1 and number in coloumn2 and number not in line3 and number not in coloumn3 and (number in line1 and number in line2):
+                sudoku[position[0], position[1]] = int(number)
+                print("WORKED! 51")
+                print(position)
 
-            #elif number in line1 and number in coloumn2 and sub_line2.count('0') == 1 and sub_line2.find('0') == 2 and subcol3.count('0') <= 2 and ((number not in coloumn3) and (number not in line3)):
-            #    sudoku[position[0], position[1]] = int(number)
-            #    print("WORKED!")
-            #    print(position)
-            #    print("C")
-            #elif number in line1 and number in coloumn1 and number in coloumn2 and sub_line2[sub_mat_pos[0]] != "0" and sub_mat_pos[0] == 1 and  ((number not in coloumn3) and (number not in line3)):
-            #    sudoku[position[0], position[1]] = int(number)
-            #    print("WORKED!")
-            #    print(position)
-            #    print("D")
+            elif sub_mat_pos[0] == 0 and sub_mat_pos[1] == 0 and subcol3[2] != "0" and number in coloumn1 and number in coloumn2 and number in line1:
+                sudoku[position[0], position[1]] = int(number)
+                print("WORKED! 52")
+                print(position)
+
             lines = get_lines(sudoku)
             coloumns = get_coloumns(sudoku)
             matrices = get_matrices(sudoku)
@@ -321,15 +581,7 @@ def eval_zeros_all_others(sudoku,dict_pos,mis_pos,lines,coloumns,matrices):
 
 
 sudoku = sudoku_opener()
-#lines = get_lines(sudoku)
-#coloumns = get_coloumns(sudoku)
-#matrices = get_matrices(sudoku)
-#mis_line = missing_lines(lines)
-#mis_col = missing_coloumns(coloumns)
-#mis_matrices = missing_matrix(matrices)
-#dict_pos = position_zeros(sudoku)
-#sudoku, mis_pos = eval_zeros_intersection(sudoku,mis_line,mis_col,mis_matrices, lines, coloumns, dict_pos)
-#sudoku = eval_zeros_all_others(sudoku,dict_pos,mis_pos,lines,coloumns, matrices)
+
 
 mis_pos
 sudoku
