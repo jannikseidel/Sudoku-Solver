@@ -2,7 +2,6 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 import plotly
 
-plotly.tools.set_credentials_file(username='seidel.jannik', api_key='lU8rL59uRIVb1hn5Pfic')
 
 
 data = open("time.txt", 'r')

@@ -10,7 +10,7 @@ import datetime
 def sudoku_opener(name):
     # inserting the sudoku in commaseperated txt, empty fields as 0s, each row in a
     # seperate line of the txt file
-    print(name)
+
     in_file = open(name, "r")
     line_name = ["line_1","line_2","line_3","line_4","line_5","line_6","line_7","line_8","line_9",]
     count = 0
@@ -171,7 +171,6 @@ def eval_zeros_all_others(sudoku,dict_pos,mis_pos,lines,coloumns,matrices):
     # function for evaluating if the numbers missing at a position are already
     # taken in all other coloumns and lines sourrounding the position
     pos_keys = dict_pos.keys()
-    print("ALL OTHERS IS EVALUATED!")
     for key in pos_keys:
         # getting the position of the zeros in the sudoku
         position = dict_pos[key]
@@ -358,47 +357,59 @@ def eval_zeros_all_others(sudoku,dict_pos,mis_pos,lines,coloumns,matrices):
 
 
             elif sub_mat_pos[0] == 0 and sub_mat_pos[1] == 1:
-                if number in line1 and number in line2 and number in coloumn1 and number in coloumn2 and number not in line3 and number not in coloumn3:
-                    sudoku[position[0], position[1]] = int(number)
-                    print("WORKED! 13")
-                    print(position)
-                elif number in line1 and number in line2 and number in coloumn2 and sub_line3[1] != "0" and number not in line3 and number not in coloumn3:
-                     sudoku[position[0], position[1]] = int(number)
-                     print("WORKED! 14")
-                     print(position)
-                elif number in coloumn1 and number in coloumn2 and sub_line2.count('0') == 0  and number in line1 and number not in line3 and number not in coloumn3:
-                     sudoku[position[0], position[1]] = int(number)
-                     print("WORKED! 15")
-                     print(position)
-                elif sub_line3[2] != '0' and number in coloumn1 and number in line1 and number in line2 and number not in line3 and number not in coloumn3:
-                    sudoku[position[0], position[1]] = int(number)
-                    print("WORKED! 16")
-                    print(position)
-                elif number in line1 and number in line2 and sub_line3[0] is not "0" and sub_line3[2] is not '0' and number not in line3 and number not in coloumn3:
-                    sudoku[position[0], position[1]] = int(number)
-                    print("WORKED! 17")
-                    print(position)
-                elif number in coloumn1 and number in coloumn2 and number in line2 and sub_line1[1] != "0" and number not in line3 and number not in coloumn3:
-                     sudoku[position[0], position[1]] = int(number)
-                     print("WORKED! 18")
-                     print(position)
-                elif sub_line3[0] != '0' and number in coloumn2 and number in line1 and number in line2 and number not in line3 and number not in coloumn3:
-                    sudoku[position[0], position[1]] = int(number)
-                    print("WORKED! 19")
-                    print(position)
-                elif subcol3[1] != '0' and subcol3[2] != '0' and number in coloumn1 and number in coloumn2 and number not in coloumn3:
-                    sudoku[position[0], position[1]] = int(number)
-                    print("WORKED! 19a")
-                    print(position)
-                elif number in coloumn1 and number in line2 and sub_line3[2] != '0' and sub_line1[1] != '0' and sub_line1[2] != '0' and number not in coloumn3 and number not in line3:
-                    sudoku[position[0], position[1]] = int(number)
-                    print("WORKED! 19b")
-                    print(position)
-                elif number in coloumn2 and number in line2 and sub_line3[0] != '0' and sub_line1[1] != '0' and sub_line1[0] != '0' and number not in coloumn3 and number not in line3:
-                    sudoku[position[0], position[1]] = int(number)
-                    print("WORKED! 19b")
-                    print(position)
-                pass
+                if number not in line3 and number not in coloumn3:
+                    if number in line1:
+                        if number in line2:
+                            if number in coloumn1 and number in coloumn2:
+                                sudoku[position[0], position[1]] = int(number)
+                                print("WORKED! 13")
+                                print(position)
+                            elif number in coloumn2 and sub_line3[1] != "0":
+                                sudoku[position[0], position[1]] = int(number)
+                                print("WORKED! 14")
+                                print(position)
+                            elif sub_line3[2] != '0' and number in coloumn1:
+                                sudoku[position[0], position[1]] = int(number)
+                                print("WORKED! 16")
+                                print(position)
+                            elif sub_line3[0] is not "0" and sub_line3[2] is not '0':
+                                sudoku[position[0], position[1]] = int(number)
+                                print("WORKED! 17")
+                                print(position)
+                            elif sub_line3[0] != '0' and number in coloumn2:
+                                sudoku[position[0], position[1]] = int(number)
+                                print("WORKED! 19")
+                                print(position)
+                        elif number in coloumn1:
+                            if number in coloumn2 and  sub_line2.count('0') == 0:
+                                sudoku[position[0], position[1]] = int(number)
+                                print("WORKED! 15")
+                                print(position)
+                    elif number in line2:
+                        if number in coloumn1:
+                            if number in coloumn2 and sub_line1[1] != "0":
+                                sudoku[position[0], position[1]] = int(number)
+                                print("WORKED! 18")
+                                print(position)
+                            elif sub_line3[2] != '0' and sub_line1[1] != '0' and sub_line1[2] != '0':
+                                sudoku[position[0], position[1]] = int(number)
+                                print("WORKED! 19b")
+                                print(position)
+                        elif number in coloumn2:
+                            if sub_line3[0] != '0' and sub_line1[1] != '0' and sub_line1[0] != '0':
+                                sudoku[position[0], position[1]] = int(number)
+                                print("WORKED! 19b")
+                                print(position)
+
+                    elif number in coloumn1:
+                        if number in coloumn2:
+                            if subcol3[1] != '0' and subcol3[2] != '0':
+                                sudoku[position[0], position[1]] = int(number)
+                                print("WORKED! 19a")
+                                print(position)
+
+                    elif number in coloumn2:
+                        pass
             elif sub_mat_pos[0] == 0 and sub_mat_pos[1] == 2:
                 if number in line1 and number in line2 and number in coloumn1 and number in coloumn2 and number not in line3 and number not in coloumn3:
                     sudoku[position[0], position[1]] = int(number)
@@ -698,12 +709,6 @@ for name in sudoku_name:
 
     sudoku = sudoku_opener(str(name))
     name = name[name.find('/')+1:-4]
-    print(name)
-    count_zeros = 0
-    for line in sudoku:
-        line = str(line).strip("[]")
-        count_zeros += line.count("0")
-        print(count_zeros)
 
     zeros = 0
     timer_start = time.time()
@@ -713,8 +718,7 @@ for name in sudoku_name:
             line = str(line).strip("[]")
             count_zeros += line.count("0")
 
-        print("new round")
-        print(count_zeros)
+
         lines = get_lines(sudoku)
         coloumns = get_coloumns(sudoku)
         matrices = get_matrices(sudoku)
@@ -733,7 +737,8 @@ for name in sudoku_name:
             dict_pos = position_zeros(sudoku)
             sudoku = eval_zeros_all_others(sudoku,dict_pos,mis_pos,lines,coloumns, matrices)
         zeros = count_zeros
-        print(sudoku)
+
+
 
     timer_stop = time.time()
     timer_taken = timer_stop - timer_start
