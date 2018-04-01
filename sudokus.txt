@@ -10,3 +10,6 @@ sudokus/sudoku_9.txt\n
 sudokus/sudoku_10.txt\n
 sudokus/sudoku_11.txt\n
 sudokus/sudoku_12.txt\n
+sudokus/sudoku_13.txt\n
+sudokus/sudoku_14.txt\n
+sudokus/sudoku_15.txt\n
