@@ -1,0 +1,15 @@
+sudokus/sudoku_1.txt\n
+sudokus/sudoku_2.txt\n
+sudokus/sudoku_3.txt\n
+sudokus/sudoku_4.txt\n
+sudokus/sudoku_5.txt\n
+sudokus/sudoku_6.txt\n
+sudokus/sudoku_7.txt\n
+sudokus/sudoku_8.txt\n
+sudokus/sudoku_9.txt\n
+sudokus/sudoku_10.txt\n
+sudokus/sudoku_11.txt\n
+sudokus/sudoku_12.txt\n
+sudokus/sudoku_13.txt\n
+sudokus/sudoku_14.txt\n
+sudokus/sudoku_15.txt\n
